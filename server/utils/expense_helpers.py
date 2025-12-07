@@ -1,10 +1,12 @@
 from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from typing import Any
 from decimal import Decimal
+from typing import Any
+
+from dateutil.relativedelta import relativedelta
+from fastapi import HTTPException
 
 from server.models.sql_models import Expense
-from fastapi import HTTPException
+
 
 def check_category_param(
         category: str,
@@ -118,3 +120,5 @@ def check_sort_param(
         return query.order_by(*order_by_clauses)
     else:
         return query.order_by(Expense.date.desc(), Expense.amount.desc())
+
+

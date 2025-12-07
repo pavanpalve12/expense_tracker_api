@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime, date
 from typing import Optional
+
+from pydantic import BaseModel
 
 # -------------------------------------------
 # --- Request Schema: Client ----> Server

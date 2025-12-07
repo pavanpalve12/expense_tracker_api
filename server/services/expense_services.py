@@ -1,15 +1,14 @@
 from datetime import date
-from datetime import date
 from decimal import Decimal
 from typing import List, Optional
 
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from server.models.schemas import ExpenseCreate, ExpenseOut, ExpenseUpdate
-from server.models.sql_models import Expense
-from server.utils import helpers as helpers
+from server.models.expense_schemas import ExpenseCreate, ExpenseOut, ExpenseUpdate
+from server.models.sql_models import Expense, User
+from server.utils import expense_helpers as helpers
 
 
 # -------------------------------------------------------------------
@@ -17,8 +16,10 @@ from server.utils import helpers as helpers
 def log_expense_service(
         user_id: int,
         expense: ExpenseCreate,
+        current_user: User,
         db: Session
 ) -> ExpenseOut:
+
     if expense.amount <= 0:
         raise HTTPException(status_code=400, detail="Amount should be greater than 0")
 
@@ -48,6 +49,7 @@ def replace_expense_service(
         user_id: int,
         expense_id: int,
         expense: ExpenseCreate,
+        current_user: User,
         db: Session
 ) -> ExpenseOut:
     if expense.amount <= 0:
@@ -90,6 +92,7 @@ def update_expense_service(
         user_id: int,
         expense_id: int,
         expense: ExpenseUpdate,
+        current_user: User,
         db: Session
 ) -> ExpenseOut:
     if expense.amount <= 0 or not expense.category:
@@ -133,6 +136,7 @@ def update_expense_service(
 def delete_expense_service(
         user_id: int,
         expense_id: int,
+        current_user: User,
         db: Session
 ) -> ExpenseOut:
     expense = (
@@ -164,10 +168,11 @@ def delete_expense_service(
     db.refresh(expense)
     return expense
 
-# -------------------------------------------------------------------
 # --------- List Expense -> GET -----------------------------------
+# -------------------------------------------------------------------
 def list_expense_service(
         user_id: int,
+        current_user: User,
         db: Session,
         category: Optional[str] = None,
         lt_amount: Optional[Decimal] = None, # less than amount
@@ -206,3 +211,4 @@ def list_expense_service(
     result_set = exp_query.all()
     print(result_set)
     return result_set
+
