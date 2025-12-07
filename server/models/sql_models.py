@@ -9,7 +9,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=True)  # You can seed dummy values for dev
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
     last_login = Column(DateTime, nullable=True)
-    expenses = relationship(argument="Expense", back_populates="user", cascade="all, delete-orphan")
+    expenses = relationship(argument="Expense", back_populates="users", cascade="all, delete-orphan")
 
 class Expense(Base):
     __tablename__ = "expenses"
