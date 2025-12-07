@@ -27,3 +27,11 @@ class ExpenseOut(BaseModel):
     deleted_at: Optional[datetime]
 
     model_config = {"from_attributes": True}
+
+# -------------------------------------------
+# -- Response Schema: Client ----> Server
+# -------------------------------------------
+class ExpenseUpdate(BaseModel):
+    category: Optional[str] = None
+    amount: Optional[float] = None
+    description: Optional[str] = None
