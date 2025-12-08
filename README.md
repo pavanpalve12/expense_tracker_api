@@ -6,7 +6,7 @@ This project is built with best practices for API design, security, database mod
 
 ---
 # Project Link
-![https://roadmap.sh/projects/expense-tracker-api](https://roadmap.sh/projects/expense-tracker-api)
+[https://roadmap.sh/projects/expense-tracker-api](https://roadmap.sh/projects/expense-tracker-api)
 
 ## 🚀 Features
 
