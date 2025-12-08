@@ -6,13 +6,15 @@ from server.db.connect_db import get_db_session
 from server.models.sql_models import User
 from server.models.user_schemas import (
     UserResponse, UserRegister,
-    UserLogin, TokenResponse
+    UserLogin, TokenResponse,
+    RefreshTokenRequest
 )
 from server.services.user_services import (
     signup_user_service,
     login_user_service,
     logout_user_service,
-    get_me_service
+    get_me_service,
+    refresh_token_service
 )
 from server.utils.user_helpers import get_current_user
 
@@ -72,15 +74,15 @@ def logout_user(
     return logout_user_service(user = current_user, db = db)
 
 # -------------------------------------------------------------------
-# --------- Token ENDPT -> POST -------------------------------
+# --------- Token REFRESH -> POST -------------------------------
 # -------------------------------------------------------------------
 @user_router.post(
-    path="/token",
-    response_model=TokenResponse
+    path = "/token/refresh",
+    response_model=TokenResponse,
+    status_code=status.HTTP_200_OK
 )
-def login_with_fastapi_docs(
-        form_data: OAuth2PasswordRequestForm = Depends(),
+def refresh_token(
+        raw_refresh_token: RefreshTokenRequest,
         db: Session = Depends(get_db_session)
 ):
-    creds = UserLogin(email=form_data.username, password=form_data.password)
-    return login_user_service(user = creds, db=db)
+    return refresh_token_service(raw_refresh_token=raw_refresh_token, db=db)

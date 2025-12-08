@@ -27,7 +27,16 @@ class UserResponse(BaseModel):
 
 class TokenResponse(BaseModel):
     access_token: str
+    refresh_token: Optional[str] = None
     token_type: str = "bearer"
+    user_info: Optional[UserResponse] = None
 
+    model_config = {"from_attributes": True}
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+class UserLogout(BaseModel):
+    refresh_token: Optional[str] = None
 
 
